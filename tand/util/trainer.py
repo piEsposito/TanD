@@ -12,8 +12,6 @@ class Trainer:
         self.criterion = criterion
         self.acc = None
 
-        pass
-
     def train(self,
               dataloader_train,
               dataloader_test,
