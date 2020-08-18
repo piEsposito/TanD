@@ -6,3 +6,5 @@ seaborn==0.10.1
 matplotlib==3.2.1
 unidecode==1.1.1
 fastapi==0.60.1
+pytest==6.0.1
+uvicorn==0.11.8

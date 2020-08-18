@@ -4,7 +4,6 @@ import mlflow.sklearn
 from fastapi import FastAPI, Request, HTTPException, Depends
 from fastapi.responses import JSONResponse
 
-import torch
 import pandas as pd
 import numpy as np
 
@@ -18,11 +17,6 @@ with open("config.json", "r") as file:
 
 with open("request_model.json", "r") as file:
     request_model = json.load(file)
-
-    try:
-        device = torch.device(config["train"]["device"])
-    except:
-        device = torch.device("cpu")
 
 model_name = config['mlflow']['model_name']
 model_stage = os.environ["MODEL_STAGE"]
