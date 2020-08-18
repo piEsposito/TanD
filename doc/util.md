@@ -1,5 +1,5 @@
 # TanD.util module
-They all inherit from torch.nn.Module
+
 # Index:
   * [Trainer](#class-Trainer)
   * [get_request_features](#func-get_request_features)
