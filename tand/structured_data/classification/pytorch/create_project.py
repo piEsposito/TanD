@@ -3,7 +3,7 @@ import os.path as path
 from shutil import copy, copytree
 
 
-def main():
+def create_project():
     curr_dir = path.abspath(path.dirname(__file__))
     template_dir = os.path.join(curr_dir, "project_template")
     file_list = os.listdir(template_dir)
@@ -14,8 +14,8 @@ def main():
         src = path.join(template_dir, file)
         dst = file
 
+        print(dst)
         if os.path.isdir(src):
-            print(src)
             copytree(src, dst)
         else:
             copy(src, dst)
@@ -29,6 +29,3 @@ def main():
     except:
         pass
 
-
-if __name__ == '__main__':
-    main()

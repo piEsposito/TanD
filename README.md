@@ -38,7 +38,7 @@ cd TanD
 pip install .
 ```
 
-## Documentation
+ ## Documentation
 Documentation for `tand.util` and explanation of project templates:
  * [util](doc/util.md)
 

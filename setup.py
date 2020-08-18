@@ -28,5 +28,10 @@ setup(
         "tand.structured_data.classification.sklearn": ["project_template/*", "project_template/data/*"],
     },
     include_package_files=True,
+    entry_points={
+        'console_scripts': [
+            'tand-create-project = tand.create_project:main'
+        ]
+    }
 
 )
