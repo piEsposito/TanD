@@ -129,9 +129,9 @@ def eval_model_predictions_per_feature(df_filename,
     features = df.columns.tolist()[:-1]
     categoric_features = list(filter(lambda i: is_categorical(df, i), features))
     analysis_filenames = []
+
     for i in range(len(label_names)):
         prediction_info = get_all_categoric_percentages(df, categoric_features, i, 'prediction')
-        #keys = list(prediction_info.keys())
         predicted_label_name = label_names[i]
 
         analysis_filenames.append(save_per_feature_analysis(features,
@@ -140,6 +140,6 @@ def eval_model_predictions_per_feature(df_filename,
                                                             i,
                                                             prediction_info,
                                                             'prediction',
-                                                            df, ))
+                                                            df))
         plt.clf()
     return analysis_filenames

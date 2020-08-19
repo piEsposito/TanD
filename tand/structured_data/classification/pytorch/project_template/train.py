@@ -120,7 +120,8 @@ def main():
                                                      config['train']['labels'],
                                                      config['train']['to_drop'],
                                                      use_torch=True,
-                                                     device=device)
+                                                     device=device,
+                                                     preprocess=preprocess)
     for eval_fname in eval_fnames:
         mlflow.log_artifact(eval_fname)
         os.remove(eval_fname)

@@ -7,7 +7,8 @@
     "model": "random_forest",
     "model_args": {
       "n_estimators": 150
-    }
+    },
+    "to_drop": []
   },
 
   "test": {

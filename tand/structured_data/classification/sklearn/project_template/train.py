@@ -77,6 +77,16 @@ def main():
     mlflow.log_artifact(conf_matrix_fname)
     os.remove(conf_matrix_fname)
 
+    eval_fnames = eval_model_predictions_per_feature(config["train"]["data_path"],
+                                                     classifier,
+                                                     config['train']['labels_column'],
+                                                     config['train']['labels'],
+                                                     config['train']['to_drop'],
+                                                     preprocess=preprocess)
+    for eval_fname in eval_fnames:
+        mlflow.log_artifact(eval_fname)
+        os.remove(eval_fname)
+
     api_request_model = get_request_features(df)
     with open("request_model.json", "w") as rmodel:
         json.dump(api_request_model, rmodel, indent=4)
