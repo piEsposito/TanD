@@ -4,6 +4,7 @@ from mlflow.tracking import MlflowClient
 
 from tand.util import *
 from model import parse_model_option
+from preprocess import preprocess
 
 import os
 import json
@@ -35,12 +36,9 @@ print(exp)
 def main():
     df = pd.read_csv(config["train"]["data_path"])
 
-    # for preliminar testing, will remove later:
-    # df = df.drop(df[df[config["train"]["labels_column"]] == 2].index, axis=0)
-    # df = df.drop(['Unnamed: 0'], axis=1)
-
-    # label_nbr = len(df[config["train"]["labels_column"]].unique())
     label_names = config["train"]["labels"]
+
+    df = preprocess(df)
 
     y = np.array(df[config["train"]["labels_column"]])
     df = df.drop([config["train"]["labels_column"]], axis=1)
