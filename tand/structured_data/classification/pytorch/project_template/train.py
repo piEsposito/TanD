@@ -46,7 +46,6 @@ def main():
     X = np.array(df)
 
     print(X.shape, y.shape)
-    # df = df.drop(['Unnamed: 0'], axis=1)
 
     try:
         device = torch.device(config["train"]["device"])
@@ -115,6 +114,17 @@ def main():
     mlflow.log_artifact(pr_curve_fname)
     os.remove(pr_curve_fname)
 
+    eval_fnames = eval_model_predictions_per_feature(config["train"]["data_path"],
+                                                     classifier,
+                                                     config['train']['labels_column'],
+                                                     config['train']['labels'],
+                                                     config['train']['to_drop'],
+                                                     use_torch=True,
+                                                     device=device)
+    for eval_fname in eval_fnames:
+        mlflow.log_artifact(eval_fname)
+        os.remove(eval_fname)
+
     api_request_model = get_request_features(df)
     with open("request_model.json", "w") as rmodel:
         json.dump(api_request_model, rmodel, indent=4)
@@ -125,7 +135,7 @@ def main():
     model_name = config['mlflow']['model_name']
 
     try:
-        model = mlflow.pytorch.load_model(f"models:/{model_name}/Production")
+        mlflow.pytorch.load_model(f"models:/{model_name}/Production")
     except:
         client = MlflowClient()
         version = client.search_model_versions(f"name='{model_name}'")[0].version
@@ -135,6 +145,7 @@ def main():
             version=version,
             stage="Production"
         )
+
 
 if __name__ == '__main__':
     main()

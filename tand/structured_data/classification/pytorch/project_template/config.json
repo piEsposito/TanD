@@ -10,7 +10,8 @@
     "hidden_dim": 256,
     "batch_size": 32,
     "device": "cpu",
-    "labels": ["no_heart_disease", "heart_disease"]
+    "labels": ["no_heart_disease", "heart_disease"],
+    "to_drop": []
 
   },
 
