@@ -9,6 +9,13 @@
   * [save_confusion_matrix](#func-save_confusion_matrix)
   * [save_roc_curve](#func-save_roc_curve)
   * [save_pr_curve](#func-save_pr_curve)
+  * [is_categorical](#func_is_categorical)
+  
+  * [get_percentage_label_not](#get_percentage_label_not)
+  * [save_per_feature_analysis](#save_per_feature_analysis)
+  * [eval_classification_model_predictions_per_feature](#eval_classification_model_predictions_per_feature)
+  
+  
   
 ---
 ## class Trainer
@@ -73,7 +80,7 @@ Parameters:
  * label_names `list` with items corresponding of label name represented by its index
  * fname `str` path where the image will be saved, works with `.png` format
  
-Saves confusion matrix beautiful plot with seaborn to path fname, then returns fname (helps automatic training and evaluation)
+Saves confusion matrix beautiful plot with seaborn to path string fname, then returns string fname (helps automatic training and evaluation)
 
 ---
 ## func save_roc_curve
@@ -85,7 +92,7 @@ Parameters:
  * label_names `list` with items corresponding of label name represented by its index
  * fname `str` path where the image will be saved, works with `.png` format
  
-Saves roc curve plot for each class on the same image then returns fname
+Saves roc curve plot for each class on the same image then returns string fname
  
 
 ---
@@ -98,6 +105,94 @@ Parameters:
  * label_names `list` with items corresponding of label name represented by its index
  * fname `str` path where the image will be saved, works with `.png` format
  
-Saves Precision-Recall curve plot for each class on the same image then returns fname
+Saves Precision-Recall curve plot for each class on the same image then returns string fname
 
 ---
+## func is_categorical
+### tand.util.is_categorical(df, feature)
+
+Parameters:
+ * df `pandas.DataFrame`
+ * feature `str`
+ 
+ Returns bool `True` if feature is categorical and binary on df else `False`
+ 
+ ---
+ 
+ ## func get_percentage_label_not
+ ### tand.util.get_percentage_label_not(df, feature, label, label_column))
+ 
+ Parameters:
+  * df `pandas.DataFrame`
+  * feature `str`
+  * label `int`
+  * label_column `str`
+ 
+ Assumes that feature is categorical and binary
+ 
+ Returns `dict` containing, the proportion of df column feature=1 which has label=1 and label=0 and the proportion of df column feature=1 which has label=1 and label=0 on dict with shape:
+ ```python
+{
+        f"{label}": {
+            'positive': positive_percentage_label,
+            'negative': 1 - positive_percentage_label
+        },
+        f"not_{label}": {
+            'positive': positive_percentage_not_label,
+            'negative': 1 - positive_percentage_not_label
+        },
+    }
+```
+
+---
+
+## func get_all_categoric_percentages
+### tand.util.get_all_categoric_percentages(df, features, label, label_column)
+
+Parameters:
+ * df `pandas.DataFrame` which contains the data
+ * features `list` list of all categoric features
+ * label `int` index of label which the feature proportions will be evaluated
+ * label_column `str` index of the column which contains the labels
+ 
+Performs `tand.util.get_percentage_label_not` on all categorical features and returns `dict` mapping the feature name to the `dict` that results from `tand.util.get_percentage_label_not`
+
+---
+
+## func save_per_feature_analysis
+### tand.util.save_per_feature_analysis(keys, predicted_label_name, predicted_label_names, label_idx, prediction_info, label_column, df)
+
+Parameters:
+ * keys `list` features of df
+ * predicted_label_name
+ * predicted_label_names
+ * label_idx
+ * prediction_info `dict` that results from `tand.util.get_all_categoric_percentages`
+ * label_column `str`
+ * df `pandas.DataFrame`
+ 
+ 
+ Saves pie charts using the data from each of predicition_info sub_dicts (proportion of labels given a feature) and `seaborn.distplot`s comparing all the continuous features over all classes on path 
+ ```python 
+ f"{predicted_label_name}_per_feature_analysis.png"
+```
+and returns this path. Helps debugging model and checking for bad-data.
+
+---
+## func eval_classification_model_predictions_per_feature
+### tand.util.eval_classification_model_predictions_per_feature(df_filename, classifier, label_column_name, label_names, to_drop, preprocess=lambda i: i, use_torch=False, device=None)
+
+Paremeters:
+ * df_filename `str` filename corresponding to `.csv` file
+ * classifier `torch.nn.Module` or any model from `sklearn`
+ * label_column_name `str`corresponding to a column where the predictions of the model will be put in the `pandas.DataFrame` generated from df_filename
+ * label_names `list` of `str` containing the label names
+ * to_drop `list` corresponding to the columns to be dropped of the model (not the labels one)
+ * preprocess `function` used to preprocess data at train step
+ * use_torch `bool` checking if classifier uses `torch`
+ * device `None` or `torch.device`
+ 
+ Creates and preprocess dataframe on path df_filename, then performs predictions in all models and performs `tand.util.save_per_feature_analysis` for all features, saving the plots and returning its paths. Intended to be used on `tand` template to store files on `mlflow` and then delete them locally. 
+ ---
+ 
+ ###### Made by Pi Esposito

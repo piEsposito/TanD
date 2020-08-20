@@ -42,7 +42,7 @@ def main():
     label_names = config["train"]["labels"]
 
     y = np.array(df[config["train"]["labels_column"]])
-    df = df.drop([config["train"]["labels_column"]], axis=1)
+    df = df.drop([config["train"]["labels_column"]] + config['train']['to_drop'], axis=1)
     X = np.array(df)
 
     print(X.shape, y.shape)
@@ -114,14 +114,14 @@ def main():
     mlflow.log_artifact(pr_curve_fname)
     os.remove(pr_curve_fname)
 
-    eval_fnames = eval_model_predictions_per_feature(config["train"]["data_path"],
-                                                     classifier,
-                                                     config['train']['labels_column'],
-                                                     config['train']['labels'],
-                                                     config['train']['to_drop'],
-                                                     use_torch=True,
-                                                     device=device,
-                                                     preprocess=preprocess)
+    eval_fnames = eval_classification_model_predictions_per_feature(config["train"]["data_path"],
+                                                                    classifier,
+                                                                    config['train']['labels_column'],
+                                                                    config['train']['labels'],
+                                                                    config['train']['to_drop'],
+                                                                    use_torch=True,
+                                                                    device=device,
+                                                                    preprocess=preprocess)
     for eval_fname in eval_fnames:
         mlflow.log_artifact(eval_fname)
         os.remove(eval_fname)

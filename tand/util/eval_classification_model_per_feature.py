@@ -104,14 +104,14 @@ def save_per_feature_analysis(keys,
     return f"{predicted_label_name}_per_feature_analysis.png"
 
 
-def eval_model_predictions_per_feature(df_filename,
-                                       classifier,
-                                       label_column_name,
-                                       label_names,
-                                       to_drop,
-                                       preprocess=lambda i: i,
-                                       use_torch=False,
-                                       device=None):
+def eval_classification_model_predictions_per_feature(df_filename,
+                                                      classifier,
+                                                      label_column_name,
+                                                      label_names,
+                                                      to_drop,
+                                                      preprocess=lambda i: i,
+                                                      use_torch=False,
+                                                      device=None):
 
     df = pd.read_csv(df_filename)
     df = df.drop([label_column_name] + to_drop, axis=1)
