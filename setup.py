@@ -24,8 +24,15 @@ setup(
         "Programming Language :: Python :: 3.8"
     ],
     package_data={
-        "tand.structured_data.classification.pytorch": ["project_template/*", "project_template/data/*"],
-        "tand.structured_data.classification.sklearn": ["project_template/*", "project_template/data/*"],
+        "tand.structured_data.classification.pytorch": ["project_template/*",
+                                                        "project_template/data/*",
+                                                        "project_template/env_files/*",
+                                                        "project_template/lib/*"],
+
+        "tand.structured_data.classification.sklearn": ["project_template/*",
+                                                        "project_template/data/*",
+                                                        "project_template/env_files/*",
+                                                        "project_template/lib/*"],
     },
     include_package_files=True,
     entry_points={

@@ -3,8 +3,7 @@ import mlflow.pytorch
 from mlflow.tracking import MlflowClient
 
 from tand.util import *
-from model import Net
-from preprocess import preprocess
+from lib import preprocess, Net
 
 import os
 import json
@@ -87,7 +86,7 @@ def main():
     y_true, y_pred, scores = get_preds_labels_scores(dataloader_test, classifier, device)
 
     metrics = eval_model_per_class(y_true, y_pred, label_names)
-    metrics["accuracy"] = trainer.acc
+    metrics["accuracy"] = trainer.acc / 100
     mlflow.log_params(metrics)
 
     mlflow.pytorch.log_model(

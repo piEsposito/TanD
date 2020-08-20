@@ -3,8 +3,7 @@ import mlflow.sklearn
 from mlflow.tracking import MlflowClient
 
 from tand.util import *
-from model import parse_model_option
-from preprocess import preprocess
+from lib import preprocess, parse_model_option
 
 import os
 import json
