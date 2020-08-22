@@ -83,6 +83,14 @@ async def update_model(token: dict = Depends(authenticate)):
     )
 
 
+@app.get("/")
+async def health_check():
+    return JSONResponse(
+        status_code=200,
+        content={"message": "alive and running!"}
+    )
+
+
 @app.exception_handler(Exception)
 async def handle_exception(*args):
     return JSONResponse(

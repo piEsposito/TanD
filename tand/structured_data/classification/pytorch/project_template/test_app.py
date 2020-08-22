@@ -27,6 +27,12 @@ def test_update_features():
     assert response.status_code == 200
 
 
+def test_health_check():
+    response = client.get("/")
+    assert response.json() == {"message": "alive and running!"}
+    assert response.status_code == 200
+
+
 def test_predict():
     with open("request_model.json", "r") as file:
         request_model = json.load(file)
