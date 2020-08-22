@@ -28,7 +28,7 @@ API_TOKEN = os.environ["API_TOKEN"]
 
 async def authenticate(request: Request):
     global API_TOKEN
-    token = request.headers.get("API_TOKEN")
+    token = request.headers.get("TOKEN")
     if (token is None) or (token != API_TOKEN):
         raise HTTPException(status_code=401, detail="Unauthorized")
     return {}

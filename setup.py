@@ -37,7 +37,8 @@ setup(
     include_package_files=True,
     entry_points={
         'console_scripts': [
-            'tand-create-project = tand.create_project:main'
+            'tand-create-project = tand.create_project:main',
+            'tand-prepare-aws-eb-deployment = tand.deployment.aws_elastic_beanstalk:main',
         ]
     }
 

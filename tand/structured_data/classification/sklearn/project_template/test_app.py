@@ -16,13 +16,13 @@ def test_unauthorized():
 def test_bad_request():
     response = client.post("/predict",
                            json={"wrong": "body"},
-                           headers={"API_TOKEN": os.environ["API_TOKEN"]})
+                           headers={"TOKEN": os.environ["API_TOKEN"]})
     assert response.json() == {"error": "Bad request"}
     assert response.status_code == 400
 
 
 def test_update_features():
-    response = client.post("/update-model", headers={"API_TOKEN": os.environ["API_TOKEN"]})
+    response = client.post("/update-model", headers={"TOKEN": os.environ["API_TOKEN"]})
     assert response.json() == {"message": "model updated"}
     assert response.status_code == 200
 
@@ -32,7 +32,7 @@ def test_predict():
         request_model = json.load(file)
 
     response = client.post("/predict",
-                           headers={"API_TOKEN": os.environ["API_TOKEN"]},
+                           headers={"TOKEN": os.environ["API_TOKEN"]},
                            json=request_model)
 
     assert response.json().get("prediction") is not None
