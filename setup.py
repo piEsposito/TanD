@@ -11,7 +11,7 @@ with open(path.join(this_directory, 'requirements.txt'), encoding='utf-8') as f:
 setup(
     name="train-and-deploy",
     packages=find_packages(),
-    version="0.1.1a",
+    version="0.1.2",
     description="Train and Deploy is a framework to automatize the Machine Learning workflow.",
     author="Pi Esposito",
     url="https://github.com/piEsposito/tand",
