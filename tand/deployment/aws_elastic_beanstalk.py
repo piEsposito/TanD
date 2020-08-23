@@ -63,6 +63,36 @@ def main():
     with open("deploy-aws-eb.sh", "w") as file:
         file.write(deployment_command)
 
+    cron_config = """files:
+    "/etc/cron.d/mycron":
+        mode: "000644"
+        owner: root
+        group: root
+        content: |
+            0 0 * * * root /usr/local/bin/myscript.sh
+
+    "/usr/local/bin/myscript.sh":
+        mode: "000755"
+        owner: root
+        group: root
+        content: |
+            #!/bin/bash
+
+            # Your actual script content
+            source /opt/elasticbeanstalk/deployment/env.list && curl -H "Content-Type: application/json" -H "TOKEN: $API_TOKEN" -X POST http://localhost/update-model
+
+            exit 0
+
+commands:
+    remove_old_cron:
+        command: "rm -f /etc/cron.d/mycron.bak"
+    
+    """
+
+    with open(os.path.join(folder, "cron.config"), "w") as file:
+        file.write(cron_config)
+        file.close()
+
 
 if __name__ == '__main__':
     main()
