@@ -2,7 +2,7 @@
 
 TanD is a simple, no-code, flexible and customizable framework to automatize the Machine Learning workflow. 
 
-With TanD you can go through the whole ML workflow without writing a single line of code: by creating a project template and setting some configurations on a `.json` file you are able to train a ML model of your choice, store it to `mlflow` to control its lifecycle and create a ready-to-deploy API to serve your it.
+With TanD you can go through the whole ML workflow without writing a single line of code (for both `sklearn` and `torch` based models): by creating a project template and setting some configurations on a `.json` file you are able to train a ML model of your choice, store it to `mlflow` to control its lifecycle and create a ready-to-deploy API to serve your it.
 
 Although TanD lets you run your workflows (from train to deploy) with no code at all, it is highly customizable, letting you introduce your chunks of code to enhance your modelling pipelines in anyway you want.
 
