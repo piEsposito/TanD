@@ -42,8 +42,16 @@ pip install .
  ## Documentation
 Documentation for `tand.util` and explanation of project templates:
  * [util](doc/util.md)
+ 
+Documentation for `tand.deployment` with utils to ease deployment to cloud:
+ * [deployment](doc/deployment.md)
+ 
+Documentation for project templates:
+ * [PyTorch structured data classification task](doc/pytorch-structured-classification.md)
+ * [PyTorch structured data regression task](doc/pytorch-structured-regression.md)
+ * [Sklearn structured data regression task](doc/sklearn-structured-classification.md)
 
-
+ 
 ---
 
 ## Quick start
