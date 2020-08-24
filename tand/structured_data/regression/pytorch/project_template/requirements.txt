@@ -1,0 +1,11 @@
+torch==1.6.0
+scikit-learn==0.22.2
+mlflow==1.10.0
+pandas==1.0.4
+numpy==1.19.1
+seaborn==0.10.1
+matplotlib==3.2.1
+unidecode==1.1.1
+fastapi==0.60.1
+pytest==6.0.1
+uvicorn==0.11.8

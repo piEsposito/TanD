@@ -33,15 +33,15 @@ print(exp)
 
 def main():
     df = pd.read_csv(config["train"]["data_path"])
-    y = np.array(df[config["train"]["labels_column"]])
+    y = np.array(df[config["train"]["label_column"]])
 
     df = preprocess(df)
 
-    label_nbr = len(df[config["train"]["labels_column"]].unique())
-    label_names = config["train"]["labels"]
+    label_nbr = len(df[config["train"]["label_column"]].unique())
+    label_names = config["train"]["label"]
 
-    y = np.array(df[config["train"]["labels_column"]])
-    df = df.drop([config["train"]["labels_column"]] + config['train']['to_drop'], axis=1)
+    y = np.array(df[config["train"]["label_column"]])
+    df = df.drop([config["train"]["label_column"]] + config['train']['to_drop'], axis=1)
     X = np.array(df)
 
     print(X.shape, y.shape)
@@ -52,9 +52,8 @@ def main():
         device = torch.device("cpu")
 
     classifier = Net(input_dim=df.shape[1],
-                     output_dim=label_nbr,
                      hidden_dim=config["train"]["hidden_dim"]).to(device)
-    criterion = torch.nn.CrossEntropyLoss()
+    criterion = torch.nn.functional.mse_loss
 
     X_train, X_test, y_train, y_test = train_test_split(X,
                                                         y,
@@ -79,14 +78,13 @@ def main():
     trainer.train(dataloader_train,
                   dataloader_test,
                   config["train"]["epochs"],
-                  config["train"]["log_every"])
+                  config["train"]["log_every"],
+                  task="regression")
 
     # eval step
 
-    y_true, y_pred, scores = get_preds_labels_scores(dataloader_test, classifier, device)
-
-    metrics = eval_model_per_class(y_true, y_pred, label_names)
-    metrics["accuracy"] = trainer.metric / 100
+    metrics = {}
+    metrics["mse"] = trainer.metric
     mlflow.log_params(metrics)
 
     mlflow.pytorch.log_model(
@@ -94,36 +92,6 @@ def main():
         artifact_path="model",
         registered_model_name=config["mlflow"]["model_name"]
     )
-
-    conf_matrix_fname = save_confusion_matrix(y_true,
-                                              y_pred,
-                                              label_names)
-    mlflow.log_artifact(conf_matrix_fname)
-    os.remove(conf_matrix_fname)
-
-    roc_curve_fname = save_roc_curve(y_true,
-                                     scores,
-                                     label_names)
-    mlflow.log_artifact(roc_curve_fname)
-    os.remove(roc_curve_fname)
-
-    pr_curve_fname = save_pr_curve(y_true,
-                                   scores,
-                                   label_names)
-    mlflow.log_artifact(pr_curve_fname)
-    os.remove(pr_curve_fname)
-
-    eval_fnames = eval_classification_model_predictions_per_feature(config["train"]["data_path"],
-                                                                    classifier,
-                                                                    config['train']['labels_column'],
-                                                                    config['train']['labels'],
-                                                                    config['train']['to_drop'],
-                                                                    use_torch=True,
-                                                                    device=device,
-                                                                    preprocess=preprocess)
-    for eval_fname in eval_fnames:
-        mlflow.log_artifact(eval_fname)
-        os.remove(eval_fname)
 
     api_request_model = get_request_features(df)
     with open("request_model.json", "w") as rmodel:
