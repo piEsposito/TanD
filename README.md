@@ -11,8 +11,8 @@ Our mission is to let you avoid repetitive tasks so you can focus on what matter
 ## Rodamap 
 The project's roadmap (which is not defined in order of priority) is:
  * Create project templates (`torch` and `sklearn`) for regression tasks in structured data;
- * Create a `Dockerfile` in project templates to ease deployment;
- * Create a `cron` job in Docker to update model parameters;
+ * ~Create a `Dockerfile` in project templates to ease deployment~ OK;
+ * ~Create a `cron` job in Docker to update model parameters~ OK;
  * Create tutorials for train and deploy with `tand`;
  * Create project templates (`torch` / `transformers`) for classification tasks in text data;
  * Create project templates (`torch`) for classification in image data;
