@@ -114,8 +114,8 @@ def eval_classification_model_predictions_per_feature(df_filename,
                                                       device=None):
 
     df = pd.read_csv(df_filename)
-    df = df.drop([label_column_name] + to_drop, axis=1)
     df = preprocess(df)
+    df = df.drop([label_column_name] + to_drop, axis=1)
     arr = np.array(df)
 
     if use_torch:
